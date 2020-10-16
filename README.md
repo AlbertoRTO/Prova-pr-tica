@@ -1,2 +1,2 @@
-# Prova-pr-tica
+# Prova-pratica
 Prova prática 
