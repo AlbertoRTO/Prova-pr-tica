@@ -1,9 +1,11 @@
 package com.example.api.web.rest;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.api.domain.Customer;
 import com.example.api.service.CustomerService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 @RestController
 @RequestMapping("/customers")
@@ -40,11 +43,13 @@ public class CustomerController {
 	}
 	
 	@PostMapping
-	public String post(@RequestBody Customer customer) {
+	public ResponseEntity post(@RequestBody Customer customer) {
 		Customer c = service.insert(customer);
-		
-		return "Novo cliente criado com successo!" + c.getId();
-		
+
+		URI location = getUri(c.getId());
+
+		return ResponseEntity.created(location).build();
+		//return "Novo cliente criado com successo!" + c.getId()
 	}
 	
 	@PutMapping("/{id}")
@@ -56,12 +61,17 @@ public class CustomerController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public String delete(@PathVariable("id") Long id) {
+	public ResponseEntity delete(@PathVariable("id") Long id) {
 		
 		service.delete(id);
 		
-		return "Cliente excluido com successo!";
+		return ResponseEntity.ok().build();
 		
+	}
+
+	private URI getUri(Long id) {
+		return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(id).toUri();
 	}
 	
 }
