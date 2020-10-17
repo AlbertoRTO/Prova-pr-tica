@@ -1,16 +1,23 @@
 package com.example.api;
 
 import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerDTO;
 import com.example.api.service.CustomerService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.net.CacheRequest;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,7 +34,7 @@ public class CustomerServiceTests {
 
       	Customer insertDado = customerService.insert(customer);
 
-		Assertions.assertNotNull(insertDado);
+		assertNotNull(insertDado);
 
 	}
 
@@ -41,7 +48,7 @@ public class CustomerServiceTests {
 		Customer insertDado = customerService.insert(customer);
 
 		Long id = insertDado.getId();
-		Assertions.assertNotNull(id);
+		assertNotNull(id);
 
 	}
 
@@ -84,13 +91,14 @@ public class CustomerServiceTests {
 	}
 
 	@Test
-	public void should_list_dado() {
+	public void should_list_dado_page() {
 
-		List<Customer> customers = customerService.findAll();
+		List<CustomerDTO> customers = customerService.findAll(PageRequest.of(0,30));
 
-		Assertions.assertEquals(3, customers.size());
+		Assertions.assertEquals(30, customers.size());
 
 	}
+
 
 	@Test
 	public void should_get_dado_by_id() {

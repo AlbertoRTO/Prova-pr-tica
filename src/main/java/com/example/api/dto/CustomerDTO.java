@@ -8,7 +8,7 @@ import org.modelmapper.ModelMapper;
 public class CustomerDTO {
 
     private Long id;
-    private String nome;
+    private String name;
     private String email;
 
     /*public CustomerDTO(Customer customer) {

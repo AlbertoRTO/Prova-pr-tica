@@ -1,15 +1,17 @@
 package com.example.api.service;
 
-import java.util.List;
-import java.util.Optional;
 
-import org.hibernate.ObjectNotFoundException;
+import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerDTO;
+import com.example.api.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.example.api.domain.Customer;
-import com.example.api.repository.CustomerRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -21,8 +23,12 @@ public class CustomerService {
 		this.repository = repository;
 	}
 
-	public List<Customer> findAll() {
-		return repository.findAllByOrderByNameAsc();
+	public List<CustomerDTO> findAll(Pageable pageable) {
+		List<CustomerDTO> list = repository.findAll(pageable).stream().map(CustomerDTO::create).collect(Collectors.toList());
+
+		//List<CustomerDTO> list = repository.findAllByOrderByNameAsc().stream().map(CustomerDTO::create).collect(Collectors.toList());
+		//return repository.findAllByOrderByNameAsc();
+		return list;
 	}
 
 	public Optional<Customer> findById(Long id) {
