@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ApiApplicationTests {
+public class CustomerServiceTests {
 	@Autowired
 	private CustomerService customerService;
 
@@ -81,4 +82,29 @@ public class ApiApplicationTests {
 
 		Assertions.assertFalse(customerService.findById(id).isPresent());
 	}
+
+	@Test
+	public void should_list_dado() {
+
+		List<Customer> customers = customerService.findAll();
+
+		Assertions.assertEquals(3, customers.size());
+
+	}
+
+	@Test
+	public void should_get_dado_by_id() {
+
+		Optional<Customer> optional = customerService.findById(1L);
+
+		Assertions.assertTrue(optional.isPresent());
+
+		Customer customer = optional.get();
+
+		Assertions.assertEquals("Mariazinha",customer.getName());
+		Assertions.assertEquals("mariazinha@email.com",customer.getEmail());
+
+	}
+
+
 }
