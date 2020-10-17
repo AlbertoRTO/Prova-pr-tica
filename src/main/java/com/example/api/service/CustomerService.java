@@ -54,10 +54,12 @@ public class CustomerService {
 		}	
 	}
 		
-	public void delete(Long id) {
-		
-		repository.deleteById(id);
-			
+	public boolean delete(Long id) {
+		if (findById(id).isPresent()){
+			repository.deleteById(id);
+			return true;
+		}
+		return false;
 	}
 
 }
