@@ -26,5 +26,8 @@ public class Customer {
 	@NotEmpty
 	@Email
 	private String email;
+
+	@Column(nullable = false)
+	private String address;
 	
 }
